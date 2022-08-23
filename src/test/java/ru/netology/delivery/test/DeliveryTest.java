@@ -14,7 +14,6 @@ import static com.codeborne.selenide.Selectors.byText;
 import static com.codeborne.selenide.Selectors.withText;
 import static com.codeborne.selenide.Selenide.$;
 import static com.codeborne.selenide.Selenide.open;
-import static ru.netology.delivery.data.DataGenerator.*;
 
 class DeliveryTest {
     private final DataGenerator.UserInfo validUser = DataGenerator.Registration.generateUser("ru");
@@ -32,14 +31,17 @@ class DeliveryTest {
         $("[data-test-id=city] input").setValue(validUser.getCity());
         $("[data-test-id=date] input").sendKeys(Keys.chord(Keys.SHIFT, Keys.HOME), Keys.BACK_SPACE);
         $("[data-test-id=date] input").setValue(firstMeetingDate);
-        $("[data-test-id=date] input").setValue(secondMeetingDate);
         $("[data-test-id=name] input").setValue(validUser.getName());
         $("[data-test-id=phone] input").setValue(validUser.getPhone());
         $("[data-test-id=agreement]").click();
         $(byText("Запланировать")).click();
-        $(".grid-col .button__text").click();
-        $("[data-test-id='replan-notification'] .button__text").click();
         $(withText("Успешно!")).should(visible, Duration.ofSeconds(15));
-        $("[data-test-id=success-notification] .notification__content").shouldHave(exactText("Встреча успешно запланирована на " + firstMeetingDate));
-        }
+        $("div .notification__content").shouldHave(Condition.exactText("Встреча успешно запланирована на " + firstMeetingDate));
+        $("[data-test-id=date] input").sendKeys(Keys.chord(Keys.SHIFT, Keys.HOME), Keys.BACK_SPACE);
+        $("[data-test-id=date] input").setValue(secondMeetingDate);
+        $(".grid-col .button__text").click();
+        $("[data-test-id='success-notification']").shouldBe(Condition.visible, Duration.ofSeconds(15));
+        $("[data-test-id='replan-notification'] .button__text").click();
+        $("div .notification__content").shouldHave(Condition.exactText("Встреча успешно запланирована на " + secondMeetingDate));
     }
+}
