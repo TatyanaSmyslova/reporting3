@@ -1,5 +1,14 @@
 plugins {
     id 'java'
+    id 'io.qameta.allure' version '2.9.6'
+}
+
+allure {
+    version = '2.16.1'
+
+    useJUnit5 {
+        version = '2.16.1'
+    }
 }
 
 group 'ru.netology'
@@ -24,6 +33,13 @@ dependencies {
     annotationProcessor 'org.projectlombok:lombok:1.18.24'
     testCompileOnly 'org.projectlombok:lombok:1.18.24'
     testAnnotationProcessor 'org.projectlombok:lombok:1.18.24'
+
+
+    implementation 'com.epam.reportportal:agent-java-junit5:5.0.0'
+    implementation 'com.epam.reportportal:logger-java-logback:5.0.2'
+    implementation 'ch.qos.logback:logback-classic:1.2.3'
+
+    testImplementation 'io.qameta.allure:allure-selenide:2.16.1'
 }
 
 test {
